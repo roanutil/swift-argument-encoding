@@ -9,19 +9,25 @@ import XCTest
 
 final class TopLevelCommandRepresentableTests: XCTestCase {
     private struct EmptyCommand: TopLevelCommandRepresentable {
-        func commandValue() -> Command { "swift" }
+        func commandValue() -> Command {
+            "swift"
+        }
+
         let flagFormatter: FlagFormatter = .init(prefix: .doubleDash)
         let optionFormatter: OptionFormatter = .init(prefix: .doubleDash)
     }
 
-    func testEmptyCommand() throws {
+    func testEmptyCommand() {
         let command = EmptyCommand()
         let args = command.arguments()
         XCTAssertEqual(args, ["swift"])
     }
 
     private struct CommandGroup: TopLevelCommandRepresentable {
-        func commandValue() -> Command { "swift" }
+        func commandValue() -> Command {
+            "swift"
+        }
+
         let flagFormatter: FlagFormatter = .init(prefix: .doubleDash)
         let optionFormatter: OptionFormatter = .init(prefix: .doubleDash)
 
@@ -34,7 +40,7 @@ final class TopLevelCommandRepresentableTests: XCTestCase {
         }
     }
 
-    func testCommand() throws {
+    func testCommand() {
         XCTAssertEqual(
             CommandGroup(
                 verbose: false,
@@ -60,7 +66,10 @@ final class TopLevelCommandRepresentableTests: XCTestCase {
     }
 
     private struct ParentCommand: TopLevelCommandRepresentable {
-        func commandValue() -> Command { "parent" }
+        func commandValue() -> Command {
+            "parent"
+        }
+
         let flagFormatter: FlagFormatter = .init(prefix: .doubleDash)
         let optionFormatter: OptionFormatter = .init(prefix: .doubleDash)
 
@@ -75,7 +84,10 @@ final class TopLevelCommandRepresentableTests: XCTestCase {
         }
 
         struct ChildCommand: CommandRepresentable, FormatterNode {
-            func commandValue() -> Command { "child" }
+            func commandValue() -> Command {
+                "child"
+            }
+
             let flagFormatter: FlagFormatter = .init(prefix: .singleDash)
             let optionFormatter: OptionFormatter = .init(prefix: .singleDash)
 
@@ -91,12 +103,14 @@ final class TopLevelCommandRepresentableTests: XCTestCase {
                 case arm64
                 case x86_64
 
-                var description: String { rawValue }
+                var description: String {
+                    rawValue
+                }
             }
         }
     }
 
-    func testNestedCommand() throws {
+    func testNestedCommand() {
         XCTAssertEqual(
             ParentCommand(
                 verbose: false,
@@ -123,9 +137,17 @@ final class TopLevelCommandRepresentableTests: XCTestCase {
     }
 
     private enum ParentEnumCommand: TopLevelCommandRepresentable {
-        func commandValue() -> Command { "parent" }
-        var flagFormatter: FlagFormatter { FlagFormatter(prefix: .singleDash) }
-        var optionFormatter: OptionFormatter { OptionFormatter(prefix: .singleDash) }
+        func commandValue() -> Command {
+            "parent"
+        }
+
+        var flagFormatter: FlagFormatter {
+            FlagFormatter(prefix: .singleDash)
+        }
+
+        var optionFormatter: OptionFormatter {
+            OptionFormatter(prefix: .singleDash)
+        }
 
         case run(asyncMain: Flag, skipBuild: Flag)
         case test(numWorkers: Option<Int>, testProduct: Option<String>)
@@ -133,7 +155,10 @@ final class TopLevelCommandRepresentableTests: XCTestCase {
     }
 
     private struct ChildEnumCommand: TopLevelCommandRepresentable {
-        func commandValue() -> Command { "child" }
+        func commandValue() -> Command {
+            "child"
+        }
+
         let flagFormatter: FlagFormatter = .init(prefix: .singleDash)
         let optionFormatter: OptionFormatter = .init(prefix: .singleDash)
 
@@ -149,39 +174,41 @@ final class TopLevelCommandRepresentableTests: XCTestCase {
             case arm64
             case x86_64
 
-            var description: String { rawValue }
+            var description: String {
+                rawValue
+            }
         }
     }
 
-    func testEnumRunTrueFalse() throws {
+    func testEnumRunTrueFalse() {
         XCTAssertEqual(
             ParentEnumCommand.run(asyncMain: true, skipBuild: false).arguments(),
             ["parent", "-asyncMain"]
         )
     }
 
-    func testEnumRunFalseTrue() throws {
+    func testEnumRunFalseTrue() {
         XCTAssertEqual(
             ParentEnumCommand.run(asyncMain: false, skipBuild: true).arguments(),
             ["parent", "-skipBuild"]
         )
     }
 
-    func testEnumRunTrueTrue() throws {
+    func testEnumRunTrueTrue() {
         XCTAssertEqual(
             ParentEnumCommand.run(asyncMain: true, skipBuild: true).arguments(),
             ["parent", "-asyncMain", "-skipBuild"]
         )
     }
 
-    func testEnumTest() throws {
+    func testEnumTest() {
         XCTAssertEqual(
             ParentEnumCommand.test(numWorkers: 2, testProduct: "PackageTarget").arguments(),
             ["parent", "-numWorkers", "2", "-testProduct", "PackageTarget"]
         )
     }
 
-    func testEnumChild() throws {
+    func testEnumChild() {
         XCTAssertEqual(
             ParentEnumCommand.child(ChildEnumCommand(configuration: .arm64, buildTests: true)).arguments(),
             ["parent", "child", "-configuration", "arm64", "-buildTests"]

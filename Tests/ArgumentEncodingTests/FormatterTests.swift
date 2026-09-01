@@ -9,84 +9,84 @@ import Foundation
 import XCTest
 
 final class FormatterTests: XCTestCase {
-    func testFlagFormatterSingleDashPrefix() throws {
+    func testFlagFormatterSingleDashPrefix() {
         XCTAssertEqual(
             FlagFormatter(prefix: .singleDash).format(key: "flagKey"),
             "-flagKey"
         )
     }
 
-    func testFlagFormatterDoubleDashPrefix() throws {
+    func testFlagFormatterDoubleDashPrefix() {
         XCTAssertEqual(
             FlagFormatter(prefix: .doubleDash).format(key: "flagKey"),
             "--flagKey"
         )
     }
 
-    func testFlagFormatterEmptyPrefix() throws {
+    func testFlagFormatterEmptyPrefix() {
         XCTAssertEqual(
             FlagFormatter(prefix: .empty).format(key: "flagKey"),
             "flagKey"
         )
     }
 
-    func testFlagFormatterKebabCaseBody() throws {
+    func testFlagFormatterKebabCaseBody() {
         XCTAssertEqual(
             FlagFormatter(key: .kebabCase).format(key: "flagKey"),
             "flag-key"
         )
     }
 
-    func testFlagFormatterSnakeCaseBody() throws {
+    func testFlagFormatterSnakeCaseBody() {
         XCTAssertEqual(
             FlagFormatter(key: .snakeCase).format(key: "flagKey"),
             "flag_key"
         )
     }
 
-    func testOptionFormatterSingleDashPrefix() throws {
+    func testOptionFormatterSingleDashPrefix() {
         XCTAssertEqual(
             OptionFormatter(prefix: .singleDash).format(key: "optionKey", value: "optionValue"),
             ["-optionKey", "optionValue"]
         )
     }
 
-    func testOptionFormatterDoubleDashPrefix() throws {
+    func testOptionFormatterDoubleDashPrefix() {
         XCTAssertEqual(
             OptionFormatter(prefix: .doubleDash).format(key: "optionKey", value: "optionValue"),
             ["--optionKey", "optionValue"]
         )
     }
 
-    func testOptionFormatterEmptyPrefix() throws {
+    func testOptionFormatterEmptyPrefix() {
         XCTAssertEqual(
             OptionFormatter(prefix: .empty).format(key: "optionKey", value: "optionValue"),
             ["optionKey", "optionValue"]
         )
     }
 
-    func testOptionFormatterKebabCaseBody() throws {
+    func testOptionFormatterKebabCaseBody() {
         XCTAssertEqual(
             OptionFormatter(key: .kebabCase).format(key: "optionKey", value: "optionValue"),
             ["option-key", "optionValue"]
         )
     }
 
-    func testOptionFormatterSnakeCaseBody() throws {
+    func testOptionFormatterSnakeCaseBody() {
         XCTAssertEqual(
             OptionFormatter(key: .snakeCase).format(key: "optionKey", value: "optionValue"),
             ["option_key", "optionValue"]
         )
     }
 
-    func testOptionFormatterEqualSeparator() throws {
+    func testOptionFormatterEqualSeparator() {
         XCTAssertEqual(
             OptionFormatter(separator: .equal).format(key: "optionKey", value: "optionValue"),
             ["optionKey=optionValue"]
         )
     }
 
-    func testOptionFormatterSingleQuoteValue() throws {
+    func testOptionFormatterSingleQuoteValue() {
         XCTAssertEqual(
             OptionFormatter(value: .singleQuote).format(key: "optionKey", value: "optionValue"),
             ["optionKey", "'optionValue'"]

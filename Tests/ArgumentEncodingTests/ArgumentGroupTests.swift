@@ -14,7 +14,7 @@ final class ArgumentGroupTests: XCTestCase {
         let optionFormatter: OptionFormatter = .init(prefix: .doubleDash)
     }
 
-    func testEmptyGroup() throws {
+    func testEmptyGroup() {
         XCTAssertEqual(EmptyGroup().arguments(), [])
     }
 
@@ -33,7 +33,7 @@ final class ArgumentGroupTests: XCTestCase {
         }
     }
 
-    func testGroup() throws {
+    func testGroup() {
         XCTAssertEqual(
             Group(
                 asyncMain: false,
@@ -88,11 +88,13 @@ final class ArgumentGroupTests: XCTestCase {
             case arm64
             case x86_64
 
-            var description: String { rawValue }
+            var description: String {
+                rawValue
+            }
         }
     }
 
-    func testNestedGroup() throws {
+    func testNestedGroup() {
         XCTAssertEqual(
             ParentGroup(
                 asyncMain: false,
@@ -122,7 +124,7 @@ final class ArgumentGroupTests: XCTestCase {
         )
     }
 
-    func testArrayGroup() throws {
+    func testArrayGroup() {
         XCTAssertEqual(
             [Flag("asyncMain", enabled: true), Flag("buildTests", enabled: false)].arguments(),
             ["--asyncMain"]
@@ -149,7 +151,7 @@ final class ArgumentGroupTests: XCTestCase {
         )
     }
 
-    func testDictionaryGroup() throws {
+    func testDictionaryGroup() {
         XCTAssertEqual(
             ["asyncMain": Flag(wrappedValue: true), "buildTests": Flag(wrappedValue: false)].arguments(),
             ["--asyncMain"]
@@ -172,36 +174,41 @@ final class ArgumentGroupTests: XCTestCase {
     }
 
     private enum ParentEnumGroup: ArgumentGroup, FormatterNode {
-        var flagFormatter: FlagFormatter { FlagFormatter(prefix: .singleDash) }
-        var optionFormatter: OptionFormatter { OptionFormatter(prefix: .singleDash) }
+        var flagFormatter: FlagFormatter {
+            FlagFormatter(prefix: .singleDash)
+        }
+
+        var optionFormatter: OptionFormatter {
+            OptionFormatter(prefix: .singleDash)
+        }
 
         case run(asyncMain: Flag, skipBuild: Flag)
         case test(numWorkers: Option<Int>, testProduct: Option<String>)
         case child(ChildGroup)
     }
 
-    func testEnumGroupRunAsyncMain() throws {
+    func testEnumGroupRunAsyncMain() {
         XCTAssertEqual(
             ParentEnumGroup.run(asyncMain: true, skipBuild: false).arguments(),
             ["-asyncMain"]
         )
     }
 
-    func testEnumGroupRunSkipBuild() throws {
+    func testEnumGroupRunSkipBuild() {
         XCTAssertEqual(
             ParentEnumGroup.run(asyncMain: false, skipBuild: true).arguments(),
             ["-skipBuild"]
         )
     }
 
-    func testEnumGroupRunAsyncMainAndSkipBuild() throws {
+    func testEnumGroupRunAsyncMainAndSkipBuild() {
         XCTAssertEqual(
             ParentEnumGroup.run(asyncMain: true, skipBuild: true).arguments(),
             ["-asyncMain", "-skipBuild"]
         )
     }
 
-    func testEnumGroupTest() throws {
+    func testEnumGroupTest() {
         XCTAssertEqual(
             ParentEnumGroup.test(numWorkers: 2, testProduct: "PackageTarget").arguments(),
             ["-numWorkers", "2", "-testProduct", "PackageTarget"]
@@ -240,7 +247,7 @@ final class ArgumentGroupTests: XCTestCase {
         @Flag var deepNestedF: Bool = true
     }
 
-    func testDeepNested() throws {
+    func testDeepNested() {
         XCTAssertEqual(
             DeepNestedA().arguments(),
             ["--deepNestedA", "--deepNestedB", "--deepNestedC", "--deepNestedD", "--deepNestedE", "--deepNestedF"]
@@ -249,13 +256,21 @@ final class ArgumentGroupTests: XCTestCase {
 }
 
 extension Array: ArgumentGroup, FormatterNode {
-    public var flagFormatter: ArgumentEncoding.FlagFormatter { FlagFormatter(prefix: .doubleDash) }
+    public var flagFormatter: ArgumentEncoding.FlagFormatter {
+        FlagFormatter(prefix: .doubleDash)
+    }
 
-    public var optionFormatter: ArgumentEncoding.OptionFormatter { OptionFormatter(prefix: .doubleDash) }
+    public var optionFormatter: ArgumentEncoding.OptionFormatter {
+        OptionFormatter(prefix: .doubleDash)
+    }
 }
 
 extension Dictionary: ArgumentGroup, FormatterNode {
-    public var flagFormatter: ArgumentEncoding.FlagFormatter { FlagFormatter(prefix: .doubleDash) }
+    public var flagFormatter: ArgumentEncoding.FlagFormatter {
+        FlagFormatter(prefix: .doubleDash)
+    }
 
-    public var optionFormatter: ArgumentEncoding.OptionFormatter { OptionFormatter(prefix: .doubleDash) }
+    public var optionFormatter: ArgumentEncoding.OptionFormatter {
+        OptionFormatter(prefix: .doubleDash)
+    }
 }

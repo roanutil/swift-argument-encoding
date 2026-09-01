@@ -184,9 +184,7 @@ extension Positional {
     }
 
     @Sendable
-    public static func unwrap<Wrapped>(_ value: Wrapped?) -> [String] where Wrapped: CustomStringConvertible,
-        Value == Wrapped?
-    {
+    public static func unwrap<Wrapped: CustomStringConvertible>(_ value: Wrapped?) -> [String] where Value == Wrapped? {
         [value?.description].compactMap { $0 }
     }
 }
@@ -217,8 +215,9 @@ extension Positional {
     }
 
     @Sendable
-    public static func unwrap<E>(_ value: Value) -> [String] where Value: Sequence, Value.Element == E,
-        E: CustomStringConvertible
+    public static func unwrap<E: CustomStringConvertible>(_ value: Value) -> [String] where Value: Sequence,
+        Value.Element == E
+
     {
         value.map(\E.description)
     }
@@ -342,7 +341,7 @@ extension Positional: Encodable where Value: Encodable {
 
 // MARK: Internal Types
 
-/*
+/**
  Since Positional is generic, we need a single type to cast to in ArgumentGroup.
  PositionalProtocol is that type and Positional is the only type that conforms.
  */

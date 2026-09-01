@@ -9,25 +9,25 @@ import Dependencies
 import XCTest
 
 final class PositionalTests: XCTestCase {
-    func testPositional() throws {
+    func testPositional() {
         let positional = Positional(value: "positional-argument")
         let args = positional.arguments()
         XCTAssertEqual(args, ["positional-argument"])
     }
 
-    func testBothRawValueAndStringConvertible() throws {
+    func testBothRawValueAndStringConvertible() {
         let positional = Positional(value: RawValueCustomStringConvertible(rawValue: "positional-argument"))
         let args = positional.arguments()
         XCTAssertEqual(args, ["positional-argument"])
     }
 
-    func testBothRawValueAndStringConvertibleContainer() throws {
+    func testBothRawValueAndStringConvertibleContainer() {
         let container = Container(configuration: RawValueCustomStringConvertible(rawValue: "positional-argument"))
         let args = container.arguments()
         XCTAssertEqual(args, ["positional-argument"])
     }
 
-    func testPositionalArgumentGroup() throws {
+    func testPositionalArgumentGroup() {
         let positional =
             Positional(
                 value: Container(configuration: RawValueCustomStringConvertible(rawValue: "positional-argument"))

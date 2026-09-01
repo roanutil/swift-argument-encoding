@@ -87,7 +87,7 @@ extension ArgumentGroup {
         })
     }
 
-    // Handle `struct`, `class`, and `tuple` types
+    /// Handle `struct`, `class`, and `tuple` types
     private func childArgument(_ child: Mirror.Child) -> [String] {
         guard let value = cast(value: child.value) else {
             return []
@@ -95,7 +95,7 @@ extension ArgumentGroup {
         return childArgument(label: child.label, value: value, subject: child.value)
     }
 
-    // Convert the provided `Any` value to a `Container` to reveal the underlying argument type.
+    /// Convert the provided `Any` value to a `Container` to reveal the underlying argument type.
     private func cast(value: Any) -> Container? {
         if let container = value as? Container {
             return container
@@ -120,7 +120,7 @@ extension ArgumentGroup {
         }
     }
 
-    // Produce the actual array of arguments from a label and `Container`
+    /// Produce the actual array of arguments from a label and `Container`
     private func childArgument(label _label: String?, value: Container, subject: Any) -> [String] {
         applyFormatters(subject: subject, operation: {
             let label = trimLeadingUnderscore(_label)
@@ -162,7 +162,7 @@ extension ArgumentGroup {
         }
     }
 
-    // Handle key-value pairs like a `Dictionary.Element`
+    /// Handle key-value pairs like a `Dictionary.Element`
     private func childKeyValuePairArgument(_ child: Mirror.Child) -> [String] {
         guard let keyValuePair = child.value as? (any CustomStringConvertible, Any),
               let value = cast(value: keyValuePair.1)
@@ -172,8 +172,8 @@ extension ArgumentGroup {
         return childArgument(label: keyValuePair.0.description, value: value, subject: keyValuePair.1)
     }
 
-    // If working with a property wrapper, the wrapped value is prefixed with a '_'.
-    // We don't want to leave that if the property name is used as the key.
+    /// If working with a property wrapper, the wrapped value is prefixed with a '_'.
+    /// We don't want to leave that if the property name is used as the key.
     private func trimLeadingUnderscore(_ label: String?) -> String? {
         if let label, label.first == "_" {
             return label.dropFirst(1).description
@@ -182,7 +182,7 @@ extension ArgumentGroup {
         }
     }
 
-    // Handle `enum` types
+    /// Handle `enum` types
     private func childEnumArgument(subject: Any, mirror: Mirror) -> [String] {
         let container = cast(value: subject)
         let subjectLabel: [String]
@@ -229,7 +229,7 @@ extension ArgumentGroup {
         }
     }
 
-    // Access associated values of an `enum` case
+    /// Access associated values of an `enum` case
     private func associatedValues(mirror: Mirror) -> [String: Container] {
         guard let child = mirror.children.first else {
             return [:]
@@ -247,7 +247,7 @@ extension ArgumentGroup {
         }
     }
 
-    // Access name of an `enum` case
+    /// Access name of an `enum` case
     private func caseName(mirror: Mirror) -> String? {
         guard let caseName = mirror.children.first?.label else {
             return nil
@@ -256,7 +256,7 @@ extension ArgumentGroup {
     }
 }
 
-// Represents the possible underlying argument types
+/// Represents the possible underlying argument types
 private enum Container {
     case option(any OptionProtocol)
     case optionSet(any OptionSetProtocol)

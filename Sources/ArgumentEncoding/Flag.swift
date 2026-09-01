@@ -110,7 +110,7 @@ extension Flag: Encodable {
 
 // MARK: Internal Types
 
-/*
+/**
  Dependencies library is used for injecting the formatters. FlagEncoding is
  initialized within a `withDependencies` closure so that the formatter is
  correctly injected.

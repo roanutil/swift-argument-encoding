@@ -33,7 +33,7 @@ import Foundation
 /// OptionSetContainer().arguments() == ["--name", "value1", "--name", "value2"]
 /// ```
 @propertyWrapper
-public struct OptionSet<Value>: OptionSetProtocol where Value: Sequence {
+public struct OptionSet<Value: Sequence>: OptionSetProtocol {
     /// Explicitly specify the key value
     public let keyOverride: String?
     public var wrappedValue: Value
@@ -250,7 +250,7 @@ extension OptionSet: Encodable where Value: Encodable {
 
 // MARK: Internal Types
 
-/*
+/**
  Dependencies library is used for injecting the formatters. OptionEncoding is
  initialized within a `withDependencies` closure so that the formatter is
  correctly injected.
@@ -265,7 +265,7 @@ struct OptionSetEncoding {
     }
 }
 
-/*
+/**
  Since OptionSet is generic, we need a single type to cast to in ArgumentGroup.
  OptionSetProtocol is that type and OptionSet is the only type that conforms.
  */

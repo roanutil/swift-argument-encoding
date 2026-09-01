@@ -7,10 +7,17 @@
 import ArgumentEncoding
 
 enum SwiftCommand: TopLevelCommandRepresentable {
-    func commandValue() -> Command { "swift" }
+    func commandValue() -> Command {
+        "swift"
+    }
 
-    var flagFormatter: FlagFormatter { .doubleDashPrefixKebabCase }
-    var optionFormatter: OptionFormatter { .doubleDashPrefixKebabCase }
+    var flagFormatter: FlagFormatter {
+        .doubleDashPrefixKebabCase
+    }
+
+    var optionFormatter: OptionFormatter {
+        .doubleDashPrefixKebabCase
+    }
 
     case run(RunCommand)
     case test(TestCommand)
