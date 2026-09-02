@@ -8,13 +8,13 @@ import ArgumentEncoding
 import XCTest
 
 final class CommandTests: XCTestCase {
-    func testEmptyCommand() throws {
+    func testEmptyCommand() {
         let command = Command(rawValue: "")
         let args = command.arguments()
         XCTAssertEqual(args, [])
     }
 
-    func testCommand() throws {
+    func testCommand() {
         let command = Command(rawValue: "swift")
         let args = command.arguments()
         XCTAssertEqual(args, ["swift"])

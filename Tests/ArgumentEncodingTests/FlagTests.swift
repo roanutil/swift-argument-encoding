@@ -9,7 +9,7 @@ import Dependencies
 import XCTest
 
 final class FlagTests: XCTestCase {
-    func testFlagImplicitEnabled() throws {
+    func testFlagImplicitEnabled() {
         let flag = Flag("verbose")
         let args = withDependencies { values in
             values.flagFormatter = FlagFormatter(prefix: .doubleDash)
@@ -19,7 +19,7 @@ final class FlagTests: XCTestCase {
         XCTAssertEqual(args, ["--verbose"])
     }
 
-    func testFlagExplicitEnabled() throws {
+    func testFlagExplicitEnabled() {
         let flag = Flag("verbose", enabled: true)
         let args = withDependencies { values in
             values.flagFormatter = FlagFormatter(prefix: .doubleDash)

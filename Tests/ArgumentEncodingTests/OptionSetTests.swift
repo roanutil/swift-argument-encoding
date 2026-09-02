@@ -9,7 +9,7 @@ import Dependencies
 import XCTest
 
 final class OptionSetTests: XCTestCase {
-    func testOptionSet() throws {
+    func testOptionSet() {
         let optionSet = OptionSet(key: "configuration", value: ["release", "debug"])
         let args = withDependencies { values in
             values.optionFormatter = OptionFormatter(prefix: .doubleDash)
@@ -19,7 +19,7 @@ final class OptionSetTests: XCTestCase {
         XCTAssertEqual(args, ["--configuration", "release", "--configuration", "debug"])
     }
 
-    func testBothRawValueAndStringConvertible() throws {
+    func testBothRawValueAndStringConvertible() {
         let optionSet = OptionSet(
             key: "configuration",
             value: [
@@ -35,7 +35,7 @@ final class OptionSetTests: XCTestCase {
         XCTAssertEqual(args, ["--configuration", "release", "--configuration", "debug"])
     }
 
-    func testBothRawValueAndStringConvertibleContainer() throws {
+    func testBothRawValueAndStringConvertibleContainer() {
         let container = Container(configuration: [
             RawValueCustomStringConvertible(rawValue: "release"),
             RawValueCustomStringConvertible(rawValue: "debug"),

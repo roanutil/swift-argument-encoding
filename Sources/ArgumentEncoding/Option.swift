@@ -227,9 +227,7 @@ extension Option {
     }
 
     @Sendable
-    public static func unwrap<Wrapped>(_ value: Wrapped?) -> String? where Wrapped: CustomStringConvertible,
-        Value == Wrapped?
-    {
+    public static func unwrap<Wrapped: CustomStringConvertible>(_ value: Wrapped?) -> String? where Value == Wrapped? {
         value?.description
     }
 }
@@ -324,7 +322,7 @@ extension Option: Encodable where Value: Encodable {
 
 // MARK: Internal Types
 
-/*
+/**
  Dependencies library is used for injecting the formatters. OptionEncoding is
  initialized within a `withDependencies` closure so that the formatter is
  correctly injected.
@@ -340,7 +338,7 @@ struct OptionEncoding {
     }
 }
 
-/*
+/**
  Since Option is generic, we need a single type to cast to in ArgumentGroup.
  OptionProtocol is that type and Option is the only type that conforms.
  */

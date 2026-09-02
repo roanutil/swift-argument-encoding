@@ -23,30 +23,31 @@ import Foundation
 /// // decoded = ["--option", "value1", "--option", "value2"]
 /// ```
 extension [CodingUserInfoKey: Any] {
-    public mutating func addOptionSetConfiguration<T>(
+    public mutating func addOptionSetConfiguration<T: Decodable>(
         for _: OptionSet<T>.Type,
         configuration: @escaping OptionSet<T>.DecodingConfiguration
-    ) where T: Decodable {
+    ) {
         guard let key = OptionSet<T>.configurationCodingUserInfoKey() else {
             return
         }
         self[key] = configuration
     }
 
-    public mutating func addOptionSetConfiguration<T>(for _: T.Type) where T: Decodable, T: Sequence,
-        T.Element: CustomStringConvertible
+    public mutating func addOptionSetConfiguration<T: Decodable & Sequence>(for _: T.Type)
+        where T.Element: CustomStringConvertible
     {
         addOptionSetConfiguration(for: OptionSet<T>.self, configuration: OptionSet<T>.unwrap(_:))
     }
 
-    public mutating func addOptionSetConfiguration<T>(for _: T.Type) where T: Decodable, T: Sequence,
-        T.Element: RawRepresentable, T.Element.RawValue: CustomStringConvertible
+    public mutating func addOptionSetConfiguration<T: Decodable & Sequence>(for _: T.Type)
+        where T.Element: RawRepresentable, T.Element.RawValue: CustomStringConvertible
     {
         addOptionSetConfiguration(for: OptionSet<T>.self, configuration: OptionSet<T>.unwrap(_:))
     }
 
-    public mutating func addOptionSetConfiguration<T>(for _: T.Type) where T: Decodable, T: Sequence,
-        T.Element: CustomStringConvertible, T.Element: RawRepresentable, T.Element.RawValue: CustomStringConvertible
+    public mutating func addOptionSetConfiguration<T: Decodable & Sequence>(for _: T.Type)
+        where T.Element: CustomStringConvertible, T.Element: RawRepresentable,
+        T.Element.RawValue: CustomStringConvertible
     {
         addOptionSetConfiguration(for: OptionSet<T>.self, configuration: OptionSet<T>.unwrap(_:))
     }

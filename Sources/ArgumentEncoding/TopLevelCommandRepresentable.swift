@@ -40,8 +40,8 @@ public protocol TopLevelCommandRepresentable: CommandRepresentable, FormatterNod
 }
 
 extension TopLevelCommandRepresentable {
-    // Default implementation of `ArgumentGroup.arguments` that prefixes the child arguments with `Self.commandValue`.
-    // Reflection via the `Mirror` API is used for child arguments.
+    /// Default implementation of `ArgumentGroup.arguments` that prefixes the child arguments with `Self.commandValue`.
+    /// Reflection via the `Mirror` API is used for child arguments.
     public func arguments() -> [String] {
         commandValue().arguments() + childArguments()
     }

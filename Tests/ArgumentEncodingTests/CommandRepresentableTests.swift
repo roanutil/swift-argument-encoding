@@ -8,9 +8,14 @@ import ArgumentEncoding
 import XCTest
 
 final class CommandRepresentableTests: XCTestCase {
-    private struct Container<T>: ArgumentGroup, FormatterNode where T: CommandRepresentable {
-        var flagFormatter: FlagFormatter { FlagFormatter(prefix: .doubleDash) }
-        var optionFormatter: OptionFormatter { OptionFormatter(prefix: .doubleDash) }
+    private struct Container<T: CommandRepresentable>: ArgumentGroup, FormatterNode {
+        var flagFormatter: FlagFormatter {
+            FlagFormatter(prefix: .doubleDash)
+        }
+
+        var optionFormatter: OptionFormatter {
+            OptionFormatter(prefix: .doubleDash)
+        }
 
         var command: T
 
@@ -24,7 +29,7 @@ final class CommandRepresentableTests: XCTestCase {
         let optionFormatter: OptionFormatter = .init(prefix: .doubleDash)
     }
 
-    func testEmptyCommand() throws {
+    func testEmptyCommand() {
         let command = Container(EmptyCommand())
         let args = command.arguments()
         XCTAssertEqual(args, ["command"])
@@ -43,7 +48,7 @@ final class CommandRepresentableTests: XCTestCase {
         }
     }
 
-    func testCommand() throws {
+    func testCommand() {
         XCTAssertEqual(
             Container(CommandGroup(
                 verbose: false,
@@ -105,7 +110,7 @@ final class CommandRepresentableTests: XCTestCase {
         }
     }
 
-    func testNestedCommand() throws {
+    func testNestedCommand() {
         XCTAssertEqual(
             Container(ParentCommand(
                 verbose: false,
@@ -132,43 +137,48 @@ final class CommandRepresentableTests: XCTestCase {
     }
 
     private enum ParentEnumCommand: CommandRepresentable, FormatterNode {
-        var flagFormatter: FlagFormatter { FlagFormatter(prefix: .singleDash) }
-        var optionFormatter: OptionFormatter { OptionFormatter(prefix: .singleDash) }
+        var flagFormatter: FlagFormatter {
+            FlagFormatter(prefix: .singleDash)
+        }
+
+        var optionFormatter: OptionFormatter {
+            OptionFormatter(prefix: .singleDash)
+        }
 
         case run(asyncMain: Flag, skipBuild: Flag)
         case test(numWorkers: Option<Int>, testProduct: Option<String>)
         case child(ChildCommand)
     }
 
-    func testEnumRunTrueFalse() throws {
+    func testEnumRunTrueFalse() {
         XCTAssertEqual(
             ParentEnumCommand.run(asyncMain: true, skipBuild: false).arguments(),
             ["run", "-asyncMain"]
         )
     }
 
-    func testEnumRunFalseTrue() throws {
+    func testEnumRunFalseTrue() {
         XCTAssertEqual(
             ParentEnumCommand.run(asyncMain: false, skipBuild: true).arguments(),
             ["run", "-skipBuild"]
         )
     }
 
-    func testEnumRunTrueTrue() throws {
+    func testEnumRunTrueTrue() {
         XCTAssertEqual(
             ParentEnumCommand.run(asyncMain: true, skipBuild: true).arguments(),
             ["run", "-asyncMain", "-skipBuild"]
         )
     }
 
-    func testEnumTest() throws {
+    func testEnumTest() {
         XCTAssertEqual(
             ParentEnumCommand.test(numWorkers: 2, testProduct: "PackageTarget").arguments(),
             ["test", "-numWorkers", "2", "-testProduct", "PackageTarget"]
         )
     }
 
-    func testEnumChild() throws {
+    func testEnumChild() {
         XCTAssertEqual(
             ParentEnumCommand.child(ChildCommand(configuration: .arm64, buildTests: true)).arguments(),
             ["child", "-configuration", "arm64", "-buildTests"]

@@ -21,7 +21,7 @@ public struct Command: Hashable, Sendable, RawRepresentable {
     }
 }
 
-// ExpressibleBy...Literal conformances
+/// ExpressibleBy...Literal conformances
 extension Command: ExpressibleByStringLiteral {
     public init(stringLiteral value: StringLiteralType) {
         self.init(rawValue: value)
